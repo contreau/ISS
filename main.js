@@ -17,6 +17,14 @@
 
 const api_key = "f2ac3bcb078fdfa4423ad86f0e434739";
 
+// Initializes the map
+let map = L.map("map").setView([0, 0], 2);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+// || FUNCTION || Makes api calls and updates ISS position on map
 const ISSlocation = async () => {
   const res = await fetch("http://api.open-notify.org/iss-now.json"); // returns a Response object
   const data = await res.json(); // turns Response object's 'body' into a JSON object
@@ -31,7 +39,7 @@ const ISSlocation = async () => {
       .addTo(map)
       .bindPopup("🌊🌊🌊🌊🌊")
       .openPopup();
-    // for United States
+    // handler for United States
   } else if (geodata[0].state && geodata[0].country === "US") {
     L.marker([data.iss_position.latitude, data.iss_position.longitude])
       .addTo(map)
@@ -45,7 +53,6 @@ const ISSlocation = async () => {
       .bindPopup(`${geodata[0].name}, ${geodata[0].country}`)
       .openPopup();
   }
-
   // console logs
   // handles cases when ISS is over the ocean (not in a known country's coordinates)
   try {
@@ -55,29 +62,18 @@ const ISSlocation = async () => {
     console.log("ISS is over the ocean!");
   }
   return [data.iss_position.latitude, data.iss_position.longitude];
-
-  // console.log("ISSlocation function call", data);
-  // return data.iss_position; // promise object's value is an object with coordinate data
 };
 
-// setInterval(() => {
-//   ISSlocation();
-// }, 5000);
-ISSlocation();
-
-// Leaflet Map
-
-ISSlocation().then((data) => {
-  const coords = data;
+// Updates Map focus with each
+const trackView = async (map) => {
+  const coords = await ISSlocation();
   console.log(coords);
-});
+  map.setView([coords[0], coords[1]], 5);
+};
 
-let map = L.map("map").setView([0, 0], 2);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-}).addTo(map);
-
-// setInterval(() => {
-//   ISSlocation();
-// }, 5000);
+// Program Loop
+ISSlocation();
+setInterval(() => {
+  ISSlocation();
+  trackView(map);
+}, 10000);
