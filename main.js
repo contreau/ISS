@@ -58,7 +58,7 @@ const ISSlocation = async () => {
   });
 
   // Popup messages + marker update functions
-  let ocean;
+  let water;
   let US_msg;
   let msg;
 
@@ -77,16 +77,16 @@ const ISSlocation = async () => {
   };
 
   // Marker updates on location changes
-  // handler for when above Ocean
+  // handler for when above water
   if (geodata.length === 0) {
-    const oceanRes = await fetch(
+    const waterRes = await fetch(
       `https://api.opencagedata.com/geocode/v1/json?q=${data.iss_position.latitude}+${data.iss_position.longitude}&key=${opencageKey}`
     );
-    const oceanData = await oceanRes.json();
-    ocean = oceanData.results[0].components.body_of_water;
-    placeMarker(ocean);
+    const waterData = await waterRes.json();
+    water = waterData.results[0].components.body_of_water;
+    placeMarker(water);
     setTimeout(() => {
-      replaceWithCircle(ocean);
+      replaceWithCircle(water);
     }, 10000);
     // handler for when above United States
   } else if (geodata[0].state && geodata[0].country === "US") {
@@ -106,12 +106,12 @@ const ISSlocation = async () => {
   // map.setView(coordinates, 6);
 
   // console logs
-  // handles cases when ISS is over the ocean (not in a known country's coordinates)
+  // handles cases when ISS is over water
   try {
     const location = `${geodata[0].name}, ${geodata[0].country}`;
     console.log(location, coordinates);
   } catch {
-    console.log(`ISS is over the ${ocean}!`, coordinates);
+    console.log(`ISS is above the ${water}! 🌊 `, coordinates);
   }
   return [data.iss_position.latitude, data.iss_position.longitude];
 };
