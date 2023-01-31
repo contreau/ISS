@@ -12,6 +12,10 @@
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin=""
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
     <script
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
@@ -21,11 +25,56 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <div class="locationInfo">
-      <p id="countryName"></p>
-    </div>
-    <div class="mapContainer">
-      <div id="map"></div>
-    </div>
+    <article>
+      <header class="header__row container">
+        <h1>ISS Live Tracker</h1>
+        <div class="icons">
+          <i class="fa-brands fa-html5"></i>
+          <i class="fa-brands fa-css3-alt"></i>
+          <i class="fa-brands fa-square-js"></i>
+          <a href="https://github.com/zenDev-2/ISS" target="#"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+        </div>
+      </header>
+      <main class="main__row row container">
+        <div class="infoPanel">
+          <div class="location">
+            <h2>Current Location</h2>
+            <p>
+              <i class="fa-solid fa-location-dot"></i> Kuala Lumpur, Malaysia
+            </p>
+            <button class="btn recenterBTN">Recenter Map View</button>
+            <button class="btn trackingBTN">Toggle Movement Tracking</button>
+          </div>
+        </div>
+        <div class="mapContainer">
+          <div id="map"></div>
+        </div>
+      </main>
+      <footer class="container">
+        <div class="footerLinks">
+          <p>
+            <i class="fa-regular fa-image"></i> via
+            <a href="https://unsplash.com/@quickps" target="#">Quick PS</a>
+          </p>
+
+          <ul>
+            <li>APIs:</li>
+            <li>
+              <a href="http://open-notify.org/" target="#">Open Notify</a>
+            </li>
+            <li>
+              <a href="https://openweathermap.org/" target="#">OpenWeather</a>
+            </li>
+            <li><a href="https://opencagedata.com/" target="#">OpenCage</a></li>
+          </ul>
+          <p>
+            Map Library via
+            <a href="https://leafletjs.com/" target="#">Leaflet</a>
+          </p>
+        </div>
+      </footer>
+    </article>
   </body>
 </html>

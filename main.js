@@ -1,9 +1,11 @@
+"use strict";
+
 // ISS location tracker
 
 /*
  * APIs used:
  * Open Notify
- * OpenWeather ()
+ * OpenWeather
  * OpenCage
  */
 
@@ -17,6 +19,8 @@
 
 const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
 const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
+
+let trackISS = false; // global var to be toggled to lock on and follow ISS movement
 
 // Initializes the map
 const map = L.map("map");
@@ -121,9 +125,42 @@ const ISSlocation = async () => {
 //   console.log("zooming!");
 // });
 
+// Event Handlers
+const recenter__BTN = document.querySelector(".recenterBTN");
+recenter__BTN.addEventListener("click", () => {
+  initializeMap(map);
+});
+
+const toggleTracking__BTN = document.querySelector(".trackingBTN");
+toggleTracking__BTN.addEventListener("click", () => {
+  trackISS = true ? !trackISS : (trackISS = false);
+  if (trackISS) {
+    toggleTracking__BTN.style.backgroundColor = "limegreen";
+  } else {
+    toggleTracking__BTN.style.backgroundColor = "#141414";
+  }
+  console.log(toggleTracking__BTN.style.backgroundColor);
+});
+
+toggleTracking__BTN.addEventListener("mouseover", () => {
+  if (toggleTracking__BTN.style.backgroundColor == "#141414") {
+    toggleTracking__BTN.style.backgroundColor = "#3d3d3d";
+    console.log("mouseover!");
+  }
+});
+
+toggleTracking__BTN.addEventListener("mouseout", () => {
+  if (toggleTracking__BTN.style.backgroundColor != "limegreen") {
+    toggleTracking__BTN.style.backgroundColor = "#141414";
+  }
+});
+
 // Program Loop
 initializeMap(map);
 ISSlocation();
 setInterval(() => {
+  if (trackISS) {
+    initializeMap(map);
+  }
   ISSlocation();
 }, 10000);
