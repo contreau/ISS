@@ -78,14 +78,11 @@ const ISSlocation = async () => {
 
   // returns country name after matching its code
   const findCountry = (arr, countryCode) => {
-    console.log(arr);
-    console.log(countryCode);
     for (let obj of arr) {
       if (obj.code === countryCode) {
         return obj.name;
-      } else {
-        continue;
       }
+      continue;
     }
   };
 
@@ -129,9 +126,6 @@ const ISSlocation = async () => {
       replaceWithCircle(msg);
     }, 10000);
   }
-
-  // Updates marker focus with each coordinate change
-  // map.setView(coordinates, 6);
 
   // console logs
   // handles cases when ISS is over water
