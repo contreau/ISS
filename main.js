@@ -17,6 +17,12 @@
 //   "Enter a valid OpenWeather API key:"
 // );
 
+// TODO
+// Error to handle:
+// Uncaught (in promise) TypeError: waterData.results[0] is undefined
+// ISSlocation http://127.0.0.1:5500/ISS/main.js:93
+// async* http://127.0.0.1:5500/ISS/main.js:159
+
 const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
 const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
 
@@ -66,11 +72,29 @@ const ISSlocation = async () => {
   let US_msg;
   let msg;
 
-  if (geodata.length != 0) {
-    if (geodata[0].state) {
-      US_msg = `${geodata[0].state}, ${geodata[0].country}\n${geodata[0].name}`;
+  // fetches country codes from countries.json file
+  const codes__res = await fetch("countries.json");
+  const countryCodes = await codes__res.json();
+
+  // returns country name after matching its code
+  const findCountry = (arr, countryCode) => {
+    console.log(arr);
+    console.log(countryCode);
+    for (let obj of arr) {
+      if (obj.code === countryCode) {
+        return obj.name;
+      } else {
+        continue;
+      }
     }
-    msg = `${geodata[0].name}, ${geodata[0].country}`;
+  };
+
+  if (geodata.length != 0) {
+    const countryName = findCountry(countryCodes, geodata[0].country);
+    if (geodata[0].state) {
+      US_msg = `${geodata[0].state}, ${countryName}\n${geodata[0].name}`;
+    }
+    msg = `${geodata[0].name}, ${countryName}`;
   }
   const placeMarker = (popup) => {
     currentMarker.addTo(map).bindPopup(popup);
@@ -112,7 +136,7 @@ const ISSlocation = async () => {
   // console logs
   // handles cases when ISS is over water
   try {
-    const location = `${geodata[0].name}, ${geodata[0].country}`;
+    const location = `${geodata[0].name}, ${countryName}`;
     console.log(location, coordinates);
   } catch {
     console.log(`ISS is above the ${water}! 🌊 `, coordinates);
@@ -120,10 +144,6 @@ const ISSlocation = async () => {
   return [data.iss_position.latitude, data.iss_position.longitude];
 };
 // || FUNCTION END ||
-
-// map.on("zoomstart", () => {
-//   console.log("zooming!");
-// });
 
 // Event Handlers
 const recenter__BTN = document.querySelector(".recenterBTN");
