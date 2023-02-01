@@ -17,16 +17,16 @@
 //   "Enter a valid OpenWeather API key:"
 // );
 
-// TODO
-// Error to handle:
-// Uncaught (in promise) TypeError: waterData.results[0] is undefined
-// ISSlocation http://127.0.0.1:5500/ISS/main.js:93
-// async* http://127.0.0.1:5500/ISS/main.js:159
-
+// Global vars
 const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
 const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
 
-let trackISS = false; // global var to be toggled to lock on and follow ISS movement
+let trackISS = false; // to be toggled to lock on and follow ISS movement
+let lastKnownLand = "Verifying..."; // Helps handle when water body returns undefined (in a transitionary coordinate between sea & land that the api doesn't know)
+
+// DOM nodes
+const locationTxt = document.querySelector(".locationTxt");
+const mvmntTxt = document.querySelector(".mvmnt");
 
 // Initializes the map
 const map = L.map("map");
@@ -69,7 +69,7 @@ const ISSlocation = async () => {
 
   // Popup messages + marker update functions
   let water;
-  let US_msg;
+  let hasState_msg;
   let msg;
 
   // fetches country codes from countries.json file
@@ -89,9 +89,16 @@ const ISSlocation = async () => {
   if (geodata.length != 0) {
     const countryName = findCountry(countryCodes, geodata[0].country);
     if (geodata[0].state) {
-      US_msg = `${geodata[0].state}, ${countryName}\n${geodata[0].name}`;
+      if (geodata[0].state === geodata[0].name) {
+        hasState_msg = `${geodata[0].state}, ${countryName}`;
+        lastKnownLand = hasState_msg.slice();
+      } else {
+        hasState_msg = `${geodata[0].name}, ${geodata[0].state}, ${countryName}`;
+        lastKnownLand = hasState_msg.slice();
+      }
     }
     msg = `${geodata[0].name}, ${countryName}`;
+    lastKnownLand = msg.slice();
   }
   const placeMarker = (popup) => {
     currentMarker.addTo(map).bindPopup(popup);
@@ -101,6 +108,10 @@ const ISSlocation = async () => {
     map.removeLayer(currentMarker);
   };
 
+  // Helpful debug console logs
+  // console.log(geodata.length, geodata);
+  // console.log("Last known land: ", lastKnownLand);
+
   // Marker updates on location changes
   // handler for when above water
   if (geodata.length === 0) {
@@ -108,19 +119,27 @@ const ISSlocation = async () => {
       `https://api.opencagedata.com/geocode/v1/json?q=${data.iss_position.latitude}+${data.iss_position.longitude}&key=${opencageKey}`
     );
     const waterData = await waterRes.json();
-    water = waterData.results[0].components.body_of_water;
+    try {
+      water = waterData.results[0].components.body_of_water;
+    } catch {
+      water = lastKnownLand;
+    }
+    locationTxt.innerText = water;
     placeMarker(water);
     setTimeout(() => {
       replaceWithCircle(water);
     }, 10000);
     // handler for when above United States
-  } else if (geodata[0].state && geodata[0].country === "US") {
-    placeMarker(US_msg);
+  } else if (geodata[0].state) {
+    // && geodata[0].country === "US"
+    locationTxt.innerText = hasState_msg;
+    placeMarker(hasState_msg);
     setTimeout(() => {
-      replaceWithCircle(US_msg);
+      replaceWithCircle(hasState_msg);
     }, 10000);
     // handler for when above everything else
   } else {
+    locationTxt.innerText = msg;
     placeMarker(msg);
     setTimeout(() => {
       replaceWithCircle(msg);
@@ -132,8 +151,12 @@ const ISSlocation = async () => {
   try {
     const location = `${geodata[0].name}, ${countryName}`;
     console.log(location, coordinates);
-  } catch {
-    console.log(`ISS is above the ${water}! 🌊 `, coordinates);
+  } catch (err) {
+    if (water === undefined) {
+      console.log(`ISS is above ${lastKnownLand}!`);
+    } else {
+      console.log(`ISS is above the ${water}! 🌊 `, coordinates);
+    }
   }
   return [data.iss_position.latitude, data.iss_position.longitude];
 };
@@ -149,24 +172,13 @@ const toggleTracking__BTN = document.querySelector(".trackingBTN");
 toggleTracking__BTN.addEventListener("click", () => {
   trackISS = true ? !trackISS : (trackISS = false);
   if (trackISS) {
-    toggleTracking__BTN.style.backgroundColor = "limegreen";
+    toggleTracking__BTN.style.backgroundColor = "#078343";
+    mvmntTxt.innerText = "On";
   } else {
     toggleTracking__BTN.style.backgroundColor = "#141414";
+    mvmntTxt.innerText = "Off";
   }
   console.log(toggleTracking__BTN.style.backgroundColor);
-});
-
-toggleTracking__BTN.addEventListener("mouseover", () => {
-  if (toggleTracking__BTN.style.backgroundColor == "#141414") {
-    toggleTracking__BTN.style.backgroundColor = "#3d3d3d";
-    console.log("mouseover!");
-  }
-});
-
-toggleTracking__BTN.addEventListener("mouseout", () => {
-  if (toggleTracking__BTN.style.backgroundColor != "limegreen") {
-    toggleTracking__BTN.style.backgroundColor = "#141414";
-  }
 });
 
 // Program Loop

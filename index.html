@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ISS Tracker</title>
-    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -22,7 +22,7 @@
       crossorigin=""
     ></script>
 
-    <script src="main.js" defer></script>
+    <script src="js/main.js" defer></script>
   </head>
   <body>
     <article>
@@ -42,10 +42,15 @@
           <div class="location">
             <h2>Current Location</h2>
             <p>
-              <i class="fa-solid fa-location-dot"></i> Kuala Lumpur, Malaysia
+              <i class="fa-solid fa-location-dot"></i>
+              <span class="locationTxt"></span>
             </p>
-            <button class="btn recenterBTN">Recenter Map View</button>
-            <button class="btn trackingBTN">Toggle Movement Tracking</button>
+            <div class="btn__wrap">
+              <button class="btn recenterBTN">Recenter Map View</button>
+              <button class="btn trackingBTN">
+                Movement Tracking (<span class="mvmnt">Off</span>)
+              </button>
+            </div>
           </div>
         </div>
         <div class="mapContainer">
