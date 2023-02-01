@@ -77,14 +77,7 @@ const ISSlocation = async () => {
   const countryCodes = await codes__res.json();
 
   // returns country name after matching its code
-  const findCountry = (arr, countryCode) => {
-    for (let obj of arr) {
-      if (obj.code === countryCode) {
-        return obj.name;
-      }
-      continue;
-    }
-  };
+  const findCountry = (codes, countryCode) => codes[countryCode];
 
   if (geodata.length != 0) {
     const countryName = findCountry(countryCodes, geodata[0].country);
