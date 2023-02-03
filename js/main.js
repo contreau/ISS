@@ -154,8 +154,8 @@ const ISSlocation = async () => {
   };
 
   // Helpful debug console logs
-  // console.log(geodata.length, geodata);
-  // console.log("Last known land: ", lastKnownLand);
+  console.log(geodata.length, geodata);
+  console.log("Last known land: ", lastKnownLand);
 
   // Marker updates on location changes
   // handler for when above water
@@ -231,7 +231,7 @@ initializeMap(map);
 ISSlocation();
 setInterval(() => {
   if (trackISS) {
-    initializeMap(map);
+    recenterMap(map);
   }
   ISSlocation();
 }, 10000);
