@@ -65,7 +65,7 @@ body {
 h1 {
   font-family: "Orbitron", sans-serif;
   font-weight: 600;
-  font-size: 2.5rem;
+  font-size: clamp(1.7rem, 6vw, 2.5rem);
   margin: 0;
 }
 
@@ -118,28 +118,38 @@ h1 {
 
 /* INFO PANEL */
 .infoPanel {
+  display: flex;
+  flex-direction: column;
   background-color: #141414;
   width: 38%;
   border: solid 1px #ffffff30;
   border-radius: 15px;
+  text-align: center;
 }
 
 .fa-location-dot {
   color: #f45757;
 }
 
-.location {
-  /* text-align: center; */
+/* .location {
   padding: 1em 2em;
+} */
+
+.infoContainer {
+  padding: 1em;
+}
+
+.infoContainer p {
+  font-size: 1.2rem;
 }
 
 .location h2 {
   margin: 0 auto;
 }
 
-.location p {
-  font-size: 1.1rem;
-}
+/* p.dynamicLoc {
+  display: inline-block;
+} */
 
 .btn {
   font-family: "Montserrat", sans-serif;
@@ -169,8 +179,13 @@ h1 {
 
 .btn__wrap {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  /* flex-direction: column; */
   gap: 1em;
+}
+
+.distance {
+  color: rgb(241, 230, 7);
 }
 
 /* .trackingBTN:hover {
@@ -225,10 +240,6 @@ li + li {
 }
 
 @media (max-width: 730px) {
-  h1 {
-    font-size: 2.6rem;
-  }
-
   .header__row {
     display: block;
     text-align: center;
@@ -243,9 +254,9 @@ li + li {
     font-size: 3rem;
   }
 
-  .fa-html5,
-  .fa-css3-alt,
-  .fa-square-js {
+  i.fa-html5,
+  i.fa-css3-alt,
+  i.fa-square-js {
     display: none;
   }
 
@@ -269,5 +280,22 @@ li + li {
 
   li + li {
     margin-left: 0;
+  }
+
+  .btn__wrap {
+    flex-direction: column;
+  }
+
+  .btn {
+    max-width: 100%;
+  }
+
+  .infoPanel h2,
+  .infoPanel p {
+    text-align: center;
+  }
+
+  .infoContainer {
+    padding: 1em;
   }
 }

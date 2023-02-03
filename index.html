@@ -39,18 +39,23 @@
       </header>
       <main class="main__row row container">
         <div class="infoPanel">
-          <div class="location">
-            <h2>Current Location</h2>
-            <p>
+          <div class="location infoContainer">
+            <h2>User Panel</h2>
+
+            <p class="dynamicLoc">
               <i class="fa-solid fa-location-dot"></i>
               <span class="locationTxt"></span>
             </p>
             <div class="btn__wrap">
-              <button class="btn recenterBTN">Recenter Map View</button>
               <button class="btn trackingBTN">
                 Movement Tracking (<span class="mvmnt">Off</span>)
               </button>
+              <button class="btn recenterBTN">Recenter Map View</button>
             </div>
+            <p>Click on any trailing dot to view its location.</p>
+          </div>
+          <div class="infoContainer">
+            <p><span class="distance"></span>traveled since page load.</p>
           </div>
         </div>
         <div class="mapContainer">
@@ -60,7 +65,7 @@
       <footer class="container">
         <div class="footerLinks">
           <p>
-            <i class="fa-regular fa-image"></i> via
+            Image via
             <a href="https://unsplash.com/@quickps" target="#">Quick PS</a>
           </p>
 
@@ -75,7 +80,7 @@
             <li><a href="https://opencagedata.com/" target="#">OpenCage</a></li>
           </ul>
           <p>
-            Map Library via
+            Map integration via
             <a href="https://leafletjs.com/" target="#">Leaflet</a>
           </p>
         </div>

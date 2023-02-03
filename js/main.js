@@ -17,6 +17,10 @@
 //   "Enter a valid OpenWeather API key:"
 // );
 
+// TODO
+// Debug:
+// Movement tracking button resets the distance traveled metric
+
 // Global vars
 const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
 const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
@@ -27,6 +31,7 @@ let lastKnownLand = "Verifying..."; // Helps handle when water body returns unde
 // DOM nodes
 const locationTxt = document.querySelector(".locationTxt");
 const mvmntTxt = document.querySelector(".mvmnt");
+const distanceTxt = document.querySelector(".distance");
 
 // Initializes the map
 const map = L.map("map");
@@ -40,6 +45,15 @@ const initializeMap = async (map) => {
   const res = await fetch("http://api.open-notify.org/iss-now.json");
   const data = await res.json();
   map.setView([data.iss_position.latitude, data.iss_position.longitude], 6);
+  initialLat = data.iss_position.latitude;
+  initialLon = data.iss_position.longitude;
+};
+
+// Recenters Map View
+const recenterMap = async (map) => {
+  const res = await fetch("http://api.open-notify.org/iss-now.json");
+  const data = await res.json();
+  map.setView([data.iss_position.latitude, data.iss_position.longitude], 6);
 };
 
 // ISS icon
@@ -47,6 +61,36 @@ const ISSicon = L.icon({
   iconUrl: "./img/iss.png",
   iconSize: [50, 50],
 });
+
+let initialLat;
+let initialLon;
+
+// Calculates distance between coordinates
+const distance = function (lat1, lat2, lon1, lon2) {
+  // The math module contains a function
+  // named toRadians which converts from
+  // degrees to radians.
+  lon1 = (lon1 * Math.PI) / 180;
+  lon2 = (lon2 * Math.PI) / 180;
+  lat1 = (lat1 * Math.PI) / 180;
+  lat2 = (lat2 * Math.PI) / 180;
+
+  // Haversine formula
+  let dlon = lon2 - lon1;
+  let dlat = lat2 - lat1;
+  let a =
+    Math.pow(Math.sin(dlat / 2), 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
+
+  let c = 2 * Math.asin(Math.sqrt(a));
+
+  // Radius of earth in kilometers. Use 3956
+  // for miles
+  let r = 6371;
+
+  // calculate the result
+  return Math.floor(c * r);
+};
 
 // || FUNCTION || Makes api calls and updates ISS position on map
 const ISSlocation = async () => {
@@ -58,6 +102,14 @@ const ISSlocation = async () => {
     `http://api.openweathermap.org/geo/1.0/reverse?lat=${data.iss_position.latitude}&lon=${data.iss_position.longitude}&limit=5&appid=${openweatherKey}`
   );
   const geodata = await locationRes.json();
+
+  // Calculate distance
+  distanceTxt.innerText = `~ ${distance(
+    initialLat,
+    data.iss_position.latitude,
+    initialLon,
+    data.iss_position.longitude
+  )} km `;
 
   // Visual components
   const currentMarker = L.marker(coordinates, { icon: ISSicon });
@@ -158,7 +210,7 @@ const ISSlocation = async () => {
 // Event Handlers
 const recenter__BTN = document.querySelector(".recenterBTN");
 recenter__BTN.addEventListener("click", () => {
-  initializeMap(map);
+  recenterMap(map);
 });
 
 const toggleTracking__BTN = document.querySelector(".trackingBTN");
