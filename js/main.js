@@ -15,17 +15,18 @@ const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
 let trackISS = false; // to be toggled to lock on and follow ISS movement
 let lastKnownLand = "Verifying..."; // Helps handle when water body returns undefined (in a transitionary coordinate between sea & land that the api doesn't know)
 
-// DOM nodes
-const locationTxt = document.querySelector(".locationTxt");
-const mvmntTxt = document.querySelector(".mvmnt");
-const distanceTxt = document.querySelector(".distance");
-
+// Fetches countries.json on page load
 const codes__json = new Promise((res, rej) => {
   fetch("countries.json").then((data) => {
     res(data.json());
   });
 });
 console.log(codes__json);
+
+// DOM nodes
+const locationTxt = document.querySelector(".locationTxt");
+const mvmntTxt = document.querySelector(".mvmnt");
+const distanceTxt = document.querySelector(".distance");
 
 // Initializes the map
 const map = L.map("map");
@@ -64,9 +65,6 @@ let initialLon;
 
 // Calculates distance between coordinates
 const distance = function (lat1, lat2, lon1, lon2) {
-  // The math module contains a function
-  // named toRadians which converts from
-  // degrees to radians.
   lon1 = (lon1 * Math.PI) / 180;
   lon2 = (lon2 * Math.PI) / 180;
   lat1 = (lat1 * Math.PI) / 180;
@@ -84,8 +82,6 @@ const distance = function (lat1, lat2, lon1, lon2) {
   // Radius of earth in kilometers. Use 3956
   // for miles
   let r = 6371;
-
-  // calculate the result
   return Math.floor(c * r);
 };
 
@@ -122,7 +118,7 @@ const ISSlocation = async () => {
   let msg;
   let markerMsg;
 
-  // fetches country codes from countries.json file
+  // receives global countries.json object
   const countryCodes = await codes__json;
 
   // returns country name after matching its code
@@ -194,7 +190,6 @@ const ISSlocation = async () => {
   }
 
   // console logs
-  // handles cases when ISS is over water
   try {
     const location = `${geodata[0].name}, ${countryName}`;
     console.log(location, coordinates);
