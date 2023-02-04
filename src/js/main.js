@@ -37,11 +37,11 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Initializes Map View
 const initializeMap = async (map) => {
-  const res = await fetch("http://api.open-notify.org/iss-now.json");
+  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
   const data = await res.json();
-  map.setView([data.iss_position.latitude, data.iss_position.longitude], 6);
-  initialLat = data.iss_position.latitude;
-  initialLon = data.iss_position.longitude;
+  map.setView([data.latitude, data.longitude], 6);
+  initialLat = data.latitude;
+  initialLon = data.longitude;
 };
 
 // Recenters Map View
