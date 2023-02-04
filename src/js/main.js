@@ -17,7 +17,7 @@ let lastKnownLand = "Verifying..."; // Helps handle when water body returns unde
 
 // Fetches countries.json on page load
 const codes__json = new Promise((res, rej) => {
-  fetch("countries.json").then((data) => {
+  fetch("../countries.json").then((data) => {
     res(data.json());
   });
 });
@@ -56,7 +56,7 @@ const recenterMap = async (map) => {
 
 // ISS icon
 const ISSicon = L.icon({
-  iconUrl: "./img/iss.png",
+  iconUrl: "../img/iss.png",
   iconSize: [50, 50],
 });
 
