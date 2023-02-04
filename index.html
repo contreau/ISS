@@ -52,12 +52,19 @@
               </button>
               <button class="btn recenterBTN">Recenter Map</button>
             </div>
-            <p>Click on any trailing dot to view its location.</p>
+            <p class="dot-msg">Click on a trailing dot to view its location.</p>
           </div>
           <div class="infoContainer planetAnimation">
-            CSS visual to go here ..
+            <div class="iss-anim-container">
+              <div class="iss-anim-orbit">
+                <div class="iss-anim">
+                  <img src="img/iss_white.png" alt="ISS" />
+                </div>
+                <div class="planet"></div>
+              </div>
+            </div>
           </div>
-          <div class="infoContainer">
+          <div class="infoContainer distanceInfo">
             <p><span class="distance"></span>traveled since page load.</p>
             <p class="refreshRate">Refresh rate: 7 seconds</p>
           </div>

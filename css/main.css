@@ -130,7 +130,7 @@ h1 {
   border: solid 1px #ffffff30;
   border-radius: 15px;
   text-align: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .fa-location-dot {
@@ -165,6 +165,10 @@ p.dynamicLoc {
   line-height: 1.5em;
 }
 
+.dot-msg {
+  margin-bottom: 0;
+}
+
 .btn {
   font-family: "Montserrat", sans-serif;
   max-width: 65%;
@@ -196,22 +200,85 @@ p.dynamicLoc {
   justify-content: center;
   /* flex-direction: column; */
   gap: 1em;
-  margin-top: 3rem;
+  margin-top: 1rem;
+}
+
+.distanceInfo p {
+  margin: 0;
 }
 
 .distance {
   color: rgb(241, 230, 7);
 }
 
-.refreshRate {
+p.refreshRate {
   color: #aaa8a8;
-  margin-bottom: 0;
+  margin-top: 0.2rem;
 }
 
 /* .trackingBTN:hover {
   cursor: pointer;
   background-color: #3d3d3d;
 } */
+
+/* Planet Animation */
+.planetAnimation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.planet {
+  border-radius: 50%;
+  height: 4em;
+  width: 4em;
+  background-image: linear-gradient(
+    to top,
+    #0653c8,
+    #0080ea,
+    #00a0d3,
+    #00b88f,
+    #0ac833
+  );
+  position: absolute;
+  bottom: 21%;
+  left: 22%;
+  animation: planet 10s linear infinite;
+}
+
+.iss-anim {
+  border-radius: 50%;
+  height: 1.2em;
+  width: 1.2em;
+  position: absolute;
+  left: 19px;
+}
+
+.iss-anim-orbit {
+  border-radius: 50%;
+  height: 7em;
+  width: 7em;
+  position: relative;
+  /* border: 1px #8f8787 dashed; */
+  animation: orbit 7s linear infinite;
+}
+
+.iss-anim-container {
+  position: relative;
+}
+
+@keyframes planet {
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes orbit {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 /* || FOOTER */
 
