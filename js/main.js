@@ -154,8 +154,8 @@ const ISSlocation = async () => {
   };
 
   // Helpful debug console logs
-  console.log(geodata.length, geodata);
-  console.log("Last known land: ", lastKnownLand);
+  // console.log(geodata.length, geodata);
+  // console.log("Last known land: ", lastKnownLand);
 
   // Marker updates on location changes
   // handler for when above water
@@ -173,7 +173,7 @@ const ISSlocation = async () => {
     placeMarker(water);
     setTimeout(() => {
       replaceWithCircle(water);
-    }, 10000);
+    }, 7000);
     // handler for when above United States
   } else if (geodata[0].state) {
     // && geodata[0].country === "US"
@@ -181,14 +181,14 @@ const ISSlocation = async () => {
     placeMarker(hasState_msg);
     setTimeout(() => {
       replaceWithCircle(hasState_msg);
-    }, 10000);
+    }, 7000);
     // handler for when above everything else
   } else {
     locationTxt.innerText = msg;
     placeMarker(msg);
     setTimeout(() => {
       replaceWithCircle(msg);
-    }, 10000);
+    }, 7000);
   }
 
   // console logs
@@ -234,4 +234,4 @@ setInterval(() => {
     recenterMap(map);
   }
   ISSlocation();
-}, 10000);
+}, 7000);

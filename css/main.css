@@ -125,6 +125,7 @@ h1 {
   border: solid 1px #ffffff30;
   border-radius: 15px;
   text-align: center;
+  justify-content: space-between;
 }
 
 .fa-location-dot {
@@ -137,10 +138,16 @@ h1 {
 
 .infoContainer {
   padding: 1em;
+  /* border: solid 1px #fff; */
 }
 
 .infoContainer p {
   font-size: 1.2rem;
+}
+
+.iss-white {
+  display: block;
+  margin: 0 auto;
 }
 
 .location h2 {
@@ -148,7 +155,7 @@ h1 {
 }
 
 /* p.dynamicLoc {
-  display: inline-block;
+  margin-top: 0;
 } */
 
 .btn {
@@ -186,6 +193,10 @@ h1 {
 
 .distance {
   color: rgb(241, 230, 7);
+}
+
+.refreshRate {
+  color: #aaa8a8;
 }
 
 /* .trackingBTN:hover {
@@ -267,6 +278,10 @@ li + li {
 }
 
 @media (max-width: 600px) {
+  #map {
+    min-height: 350px;
+  }
+
   footer.container {
     text-align: center;
   }
