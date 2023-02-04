@@ -47,7 +47,10 @@ const initializeMap = async (map) => {
 const recenterMap = async (map) => {
   const res = await fetch("http://api.open-notify.org/iss-now.json");
   const data = await res.json();
-  map.setView([data.iss_position.latitude, data.iss_position.longitude], 6);
+  map.setView(
+    [data.iss_position.latitude, data.iss_position.longitude],
+    map.getZoom()
+  );
 };
 
 // ISS icon
@@ -117,6 +120,7 @@ const ISSlocation = async () => {
   let water;
   let hasState_msg;
   let msg;
+  let markerMsg;
 
   // fetches country codes from countries.json file
   const countryCodes = await codes__json;
@@ -129,6 +133,7 @@ const ISSlocation = async () => {
     if (geodata[0].state) {
       if (geodata[0].state === geodata[0].name) {
         hasState_msg = `${geodata[0].state}, ${countryName}`;
+        markerMsg = `${geodata[0].state}, ${countryName}`;
         lastKnownLand = hasState_msg.slice();
       } else {
         if (`${geodata[0].name} ${geodata[0].state}`.length > 20) {
@@ -136,6 +141,7 @@ const ISSlocation = async () => {
         } else {
           hasState_msg = `${geodata[0].name}, ${geodata[0].state}, <br>${countryName}`;
         }
+        markerMsg = `${geodata[0].name}, ${geodata[0].state}, ${countryName}`;
         lastKnownLand = hasState_msg.slice();
       }
     }
@@ -173,11 +179,10 @@ const ISSlocation = async () => {
     }, 7000);
     // handler for when above United States
   } else if (geodata[0].state) {
-    // && geodata[0].country === "US"
     locationTxt.innerHTML = hasState_msg;
-    placeMarker(hasState_msg);
+    placeMarker(markerMsg);
     setTimeout(() => {
-      replaceWithCircle(hasState_msg);
+      replaceWithCircle(markerMsg);
     }, 7000);
     // handler for when above everything else
   } else {
