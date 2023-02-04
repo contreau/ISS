@@ -9,22 +9,9 @@
  * OpenCage
  */
 
-// Ask user for API key
-// *
-// *
-// My API key: f2ac3bcb078fdfa4423ad86f0e434739
-// const api_key = prompt(
-//   "Enter a valid OpenWeather API key:"
-// );
-
-// TODO
-// Debug:
-// Movement tracking button resets the distance traveled metric
-
 // Global vars
 const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
 const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
-
 let trackISS = false; // to be toggled to lock on and follow ISS movement
 let lastKnownLand = "Verifying..."; // Helps handle when water body returns undefined (in a transitionary coordinate between sea & land that the api doesn't know)
 
@@ -32,6 +19,13 @@ let lastKnownLand = "Verifying..."; // Helps handle when water body returns unde
 const locationTxt = document.querySelector(".locationTxt");
 const mvmntTxt = document.querySelector(".mvmnt");
 const distanceTxt = document.querySelector(".distance");
+
+const codes__json = new Promise((res, rej) => {
+  fetch("countries.json").then((data) => {
+    res(data.json());
+  });
+});
+console.log(codes__json);
 
 // Initializes the map
 const map = L.map("map");
@@ -114,8 +108,8 @@ const ISSlocation = async () => {
   // Visual components
   const currentMarker = L.marker(coordinates, { icon: ISSicon });
   const circle = L.circle(coordinates, {
-    color: "blue",
-    fillColor: "blue",
+    color: "rgb(194, 44, 44)",
+    fillColor: "rgb(194, 44, 44)",
     radius: 10000,
   });
 
@@ -125,8 +119,7 @@ const ISSlocation = async () => {
   let msg;
 
   // fetches country codes from countries.json file
-  const codes__res = await fetch("countries.json");
-  const countryCodes = await codes__res.json();
+  const countryCodes = await codes__json;
 
   // returns country name after matching its code
   const findCountry = (codes, countryCode) => codes[countryCode];
@@ -138,7 +131,11 @@ const ISSlocation = async () => {
         hasState_msg = `${geodata[0].state}, ${countryName}`;
         lastKnownLand = hasState_msg.slice();
       } else {
-        hasState_msg = `${geodata[0].name}, ${geodata[0].state}, ${countryName}`;
+        if (`${geodata[0].name} ${geodata[0].state}`.length > 20) {
+          hasState_msg = `${geodata[0].name}, <br>${geodata[0].state}, ${countryName}`;
+        } else {
+          hasState_msg = `${geodata[0].name}, ${geodata[0].state}, <br>${countryName}`;
+        }
         lastKnownLand = hasState_msg.slice();
       }
     }
@@ -177,7 +174,7 @@ const ISSlocation = async () => {
     // handler for when above United States
   } else if (geodata[0].state) {
     // && geodata[0].country === "US"
-    locationTxt.innerText = hasState_msg;
+    locationTxt.innerHTML = hasState_msg;
     placeMarker(hasState_msg);
     setTimeout(() => {
       replaceWithCircle(hasState_msg);
