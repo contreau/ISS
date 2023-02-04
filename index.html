@@ -29,9 +29,9 @@
       <header class="header__row container">
         <h1>ISS Live Tracker</h1>
         <div class="icons">
-          <i class="fa-brands fa-html5"></i>
-          <i class="fa-brands fa-css3-alt"></i>
-          <i class="fa-brands fa-square-js"></i>
+          <a href="https://conorkelley.me/" target="#"
+            ><i class="fa-solid fa-eye"></i
+          ></a>
           <a href="https://github.com/zenDev-2/ISS" target="#"
             ><i class="fa-brands fa-github"></i
           ></a>
@@ -40,22 +40,23 @@
       <main class="main__row row container">
         <div class="infoPanel">
           <div class="location infoContainer">
-            <!-- <h2>User Panel</h2> -->
             <img src="img/iss_white.png" alt="ISS" class="iss-white" />
 
             <p class="dynamicLoc">
-              <i class="fa-solid fa-location-dot"></i>
-              <span class="locationTxt"></span>
+              <i class="fa-solid fa-location-dot"></i
+              ><span class="locationTxt"></span>
             </p>
             <div class="btn__wrap">
               <button class="btn trackingBTN">
-                Movement Tracking (<span class="mvmnt">Off</span>)
+                Track Movement (<span class="mvmnt">Off</span>)
               </button>
-              <button class="btn recenterBTN">Recenter Map View</button>
+              <button class="btn recenterBTN">Recenter Map</button>
             </div>
             <p>Click on any trailing dot to view its location.</p>
           </div>
-          <div class="infoContainer">CSS visual to go here ..</div>
+          <div class="infoContainer planetAnimation">
+            CSS visual to go here ..
+          </div>
           <div class="infoContainer">
             <p><span class="distance"></span>traveled since page load.</p>
             <p class="refreshRate">Refresh rate: 7 seconds</p>
