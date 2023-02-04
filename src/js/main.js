@@ -4,7 +4,7 @@
 
 /*
  * APIs used:
- * Open Notify
+ * Where the ISS at?
  * OpenWeather
  * OpenCage
  */
@@ -46,12 +46,9 @@ const initializeMap = async (map) => {
 
 // Recenters Map View
 const recenterMap = async (map) => {
-  const res = await fetch("http://api.open-notify.org/iss-now.json");
+  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
   const data = await res.json();
-  map.setView(
-    [data.iss_position.latitude, data.iss_position.longitude],
-    map.getZoom()
-  );
+  map.setView([data.latitude, data.longitude], map.getZoom());
 };
 
 // ISS icon
@@ -88,20 +85,20 @@ const distance = function (lat1, lat2, lon1, lon2) {
 // || FUNCTION || Makes api calls and updates ISS position on map
 const ISSlocation = async () => {
   // Request Handling
-  const res = await fetch("http://api.open-notify.org/iss-now.json"); // returns a Response object
+  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544"); // returns a Response object
   const data = await res.json(); // turns Response object's 'body' into a JSON object
-  const coordinates = [data.iss_position.latitude, data.iss_position.longitude];
+  const coordinates = [data.latitude, data.longitude];
   const locationRes = await fetch(
-    `http://api.openweathermap.org/geo/1.0/reverse?lat=${data.iss_position.latitude}&lon=${data.iss_position.longitude}&limit=5&appid=${openweatherKey}`
+    `http://api.openweathermap.org/geo/1.0/reverse?lat=${data.latitude}&lon=${data.longitude}&limit=5&appid=${openweatherKey}`
   );
   const geodata = await locationRes.json();
 
   // Calculate distance
   distanceTxt.innerText = `~ ${distance(
     initialLat,
-    data.iss_position.latitude,
+    data.latitude,
     initialLon,
-    data.iss_position.longitude
+    data.longitude
   )} km `;
 
   // Visual components
@@ -160,7 +157,7 @@ const ISSlocation = async () => {
   // handler for when above water
   if (geodata.length === 0) {
     const waterRes = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${data.iss_position.latitude}+${data.iss_position.longitude}&key=${opencageKey}`
+      `https://api.opencagedata.com/geocode/v1/json?q=${data.latitude}+${data.longitude}&key=${opencageKey}`
     );
     const waterData = await waterRes.json();
     try {
@@ -200,7 +197,7 @@ const ISSlocation = async () => {
       console.log(`ISS is above the ${water}! 🌊 `, coordinates);
     }
   }
-  return [data.iss_position.latitude, data.iss_position.longitude];
+  return [data.latitude, data.longitude];
 };
 // || FUNCTION END ||
 
