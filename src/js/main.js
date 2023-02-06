@@ -89,7 +89,7 @@ const ISSlocation = async () => {
   const data = await res.json(); // turns Response object's 'body' into a JSON object
   const coordinates = [data.latitude, data.longitude];
   const locationRes = await fetch(
-    `http://api.openweathermap.org/geo/1.0/reverse?lat=${data.latitude}&lon=${data.longitude}&limit=5&appid=${openweatherKey}`
+    `https://api.openweathermap.org/geo/1.0/reverse?lat=${data.latitude}&lon=${data.longitude}&limit=5&appid=${openweatherKey}`
   );
   const geodata = await locationRes.json();
 
