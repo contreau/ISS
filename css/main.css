@@ -43,7 +43,7 @@ body {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   color: #fff;
-  background-image: url("https://images.unsplash.com/photo-1657120925612-f659a7a77581?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80");
+  background-image: url("../img/space-bg.jpg");
 }
 
 /* || HEADER  */

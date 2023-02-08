@@ -17,7 +17,7 @@ let lastKnownLand = "Verifying..."; // Helps handle when water body returns unde
 
 // Fetches countries.json on page load
 const codes__json = new Promise((res, rej) => {
-  fetch("../countries.json").then((data) => {
+  fetch("./countries.json").then((data) => {
     res(data.json());
   });
 });
@@ -30,10 +30,15 @@ const distanceTxt = document.querySelector(".distance");
 
 // Initializes the map
 const map = L.map("map");
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-}).addTo(map);
+L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+  {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: "abcd",
+    maxZoom: 20,
+  }
+).addTo(map);
 
 // Initializes Map View
 const initializeMap = async (map) => {
@@ -53,7 +58,7 @@ const recenterMap = async (map) => {
 
 // ISS icon
 const ISSicon = L.icon({
-  iconUrl: "../img/iss.png",
+  iconUrl: "./img/iss.png",
   iconSize: [50, 50],
 });
 
