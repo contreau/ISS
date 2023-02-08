@@ -15,14 +15,7 @@ const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
 let trackISS = false; // to be toggled to lock on and follow ISS movement
 let lastKnownLand = "Verifying..."; // Helps handle when water body returns undefined (in a transitionary coordinate between sea & land that the api doesn't know)
 
-// Fetches countries.json on page load
-// const codes__json = new Promise((res, rej) => {
-//   fetch("../../assets/countries.json").then((data) => {
-//     res(data.json());
-//   });
-// });
-// console.log(codes__json);
-
+// Country codes obj
 const codes__json = {
   AF: "Afghanistan",
   AX: "Åland Islands",
@@ -268,6 +261,7 @@ const codes__json = {
   ZM: "Zambia",
   ZW: "Zimbabwe",
 };
+
 // DOM nodes
 const locationTxt = document.querySelector(".locationTxt");
 const mvmntTxt = document.querySelector(".mvmnt");
@@ -303,7 +297,7 @@ const recenterMap = async (map) => {
 
 // ISS icon
 const ISSicon = L.icon({
-  iconUrl: "../../assets/img/iss.png",
+  iconUrl: "../../img/iss.png",
   iconSize: [50, 50],
 });
 
