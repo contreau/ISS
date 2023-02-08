@@ -43,7 +43,7 @@ body {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   color: #fff;
-  background-image: url("../img/space-bg.jpg");
+  background-image: url("../../assets/img/space-bg.jpg");
 }
 
 /* || HEADER  */
