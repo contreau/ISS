@@ -303,7 +303,7 @@ const recenterMap = async (map) => {
 
 // ISS icon
 const ISSicon = L.icon({
-  iconUrl: "../assets/img/iss.png",
+  iconUrl: "../../assets/img/iss.png",
   iconSize: [50, 50],
 });
 
