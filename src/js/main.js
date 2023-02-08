@@ -17,7 +17,7 @@ let lastKnownLand = "Verifying..."; // Helps handle when water body returns unde
 
 // Fetches countries.json on page load
 const codes__json = new Promise((res, rej) => {
-  fetch("../assets/countries.json").then((data) => {
+  fetch("../../assets/countries.json").then((data) => {
     res(data.json());
   });
 });
