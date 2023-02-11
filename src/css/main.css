@@ -94,21 +94,14 @@ h1 {
 
 /* || MAIN CONTENT */
 
-/* .main__row {
-  
-} */
-
 .mapContainer {
   background-color: #141414;
   width: 60%;
-  /*   margin-left: auto;
-  margin-right: auto; */
   border: solid 1px #ffffff30;
   border-radius: 15px;
 }
 
 #map {
-  /* padding: 12.5em; */
   max-width: 100%;
   min-height: 550px;
   border-radius: 15px;
@@ -208,11 +201,6 @@ p.refreshRate {
   color: #aaa8a8;
   margin-top: 0.2rem;
 }
-
-/* .trackingBTN:hover {
-  cursor: pointer;
-  background-color: #3d3d3d;
-} */
 
 /* Planet Animation */
 .planetAnimation {
@@ -401,16 +389,4 @@ li + li {
   p.dot-msg {
     display: none;
   }
-}
-
-@media (min-width: 1500px) {
-  /* body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  article {
-    margin: 0;
-  } */
 }
