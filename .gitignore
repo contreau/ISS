@@ -1,5 +1,6 @@
 .DS_Store
 notes.txt
 countries.json
-server
-server.js
+server/
+node_modules/
+package-lock.json
