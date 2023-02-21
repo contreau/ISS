@@ -193,6 +193,10 @@ p.dynamicLoc {
   color: rgb(241, 230, 7);
 }
 
+.hidden-br {
+  display: none;
+}
+
 div.leaflet-popup-content-wrapper {
   text-align: center;
 }
@@ -285,6 +289,15 @@ li {
 
 li + li {
   margin-left: 1rem;
+}
+
+@media (min-width: 901px) and (max-width: 1190px) {
+  .coord-separator {
+    display: none;
+  }
+  .hidden-br {
+    display: inline;
+  }
 }
 
 @media (max-width: 900px) {
@@ -387,6 +400,14 @@ li + li {
 
   p.refreshRate,
   p.dot-msg {
+    display: none;
+  }
+
+  .hidden-br {
+    display: inline;
+  }
+
+  .coord-separator {
     display: none;
   }
 }
