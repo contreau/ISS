@@ -257,6 +257,8 @@ const codes__json = {
 const locationTxt = document.querySelector(".locationTxt");
 const mvmntTxt = document.querySelector(".mvmnt");
 const distanceTxt = document.querySelector(".distance");
+const latTxt = document.querySelector(".lat");
+const lonTxt = document.querySelector(".lon");
 
 // Initializes the map
 const map = L.map("map");
@@ -272,16 +274,18 @@ L.tileLayer(
 
 // Initializes Map View
 const initializeMap = async (map) => {
-  const res = await fetch("api/isscoords");
+  const res = await fetch("http://localhost:3000/isscoords");
   const data = await res.json();
   map.setView([data.latitude, data.longitude], 6);
   initialLat = data.latitude;
   initialLon = data.longitude;
+  latTxt.innerText = `${initialLat.toFixed(4)}\u00b0`;
+  lonTxt.innerText = `${initialLon.toFixed(4)}\u00b0`;
 };
 
 // Recenters Map View
 const recenterMap = async (map) => {
-  const res = await fetch("api/isscoords");
+  const res = await fetch("http://localhost:3000/isscoords");
   const data = await res.json();
   map.setView([data.latitude, data.longitude], map.getZoom());
 };
@@ -320,11 +324,13 @@ const distance = function (lat1, lat2, lon1, lon2) {
 // || FUNCTION || Makes api calls and updates ISS position on map
 const ISSlocation = async () => {
   // Request Handling
-  const res = await fetch("api/isscoords");
+  const res = await fetch("http://localhost:3000/isscoords");
   const data = await res.json();
   const coordinates = [data.latitude, data.longitude];
+  latTxt.innerText = `${data.latitude.toFixed(4)}\u00b0`;
+  lonTxt.innerText = `${data.longitude.toFixed(4)}\u00b0`;
   const locationRes = await fetch(
-    `api/openweather?lat=${data.latitude}&lon=${data.longitude}`
+    `http://localhost:3000/openweather?lat=${data.latitude}&lon=${data.longitude}`
   );
   const geodata = await locationRes.json();
 
@@ -348,6 +354,7 @@ const ISSlocation = async () => {
   let water;
   let hasState_msg;
   let msg;
+  let msgPopup;
   let markerMsg;
 
   // receives global countries.json object
@@ -361,7 +368,11 @@ const ISSlocation = async () => {
     if (geodata[0].state) {
       if (geodata[0].state === geodata[0].name) {
         hasState_msg = `${geodata[0].state}, ${countryName}`;
-        markerMsg = `${geodata[0].state}, ${countryName}`;
+        markerMsg = `${
+          geodata[0].state
+        }, ${countryName}<br>[ ${data.latitude.toFixed(
+          4
+        )}\u00b0, ${data.longitude.toFixed(4)}\u00b0 ]`;
         lastKnownLand = hasState_msg.slice();
       } else {
         if (`${geodata[0].name} ${geodata[0].state}`.length > 20) {
@@ -369,12 +380,20 @@ const ISSlocation = async () => {
         } else {
           hasState_msg = `${geodata[0].name}, ${geodata[0].state}, <br>${countryName}`;
         }
-        markerMsg = `${geodata[0].name}, ${geodata[0].state}, ${countryName}`;
+        markerMsg = `${geodata[0].name}, ${
+          geodata[0].state
+        }, ${countryName}<br>[ ${data.latitude.toFixed(
+          4
+        )}\u00b0, ${data.longitude.toFixed(4)}\u00b0 ]`;
         lastKnownLand = hasState_msg.slice();
       }
     }
     msg = `${geodata[0].name}, ${countryName}`;
+    msgPopup = `${geodata[0].name}, ${countryName}<br>[ ${data.latitude.toFixed(
+      4
+    )}\u00b0, ${data.longitude.toFixed(4)}\u00b0 ]`;
     lastKnownLand = msg.slice();
+    // console.log(`msgPopup is: ${msgPopup}. state: ${geodata[0].state}`);
   }
   const placeMarker = (popup) => {
     currentMarker.addTo(map).bindPopup(popup);
@@ -392,7 +411,7 @@ const ISSlocation = async () => {
   // handler for when above water
   if (geodata.length === 0) {
     const waterRes = await fetch(
-      `api/opencage?lat=${data.latitude}&lon=${data.longitude}`
+      `http://localhost:3000/opencage?lat=${data.latitude}&lon=${data.longitude}`
     );
     const waterData = await waterRes.json();
     try {
@@ -415,9 +434,9 @@ const ISSlocation = async () => {
     // handler for when above everything else
   } else {
     locationTxt.innerText = msg;
-    placeMarker(msg);
+    placeMarker(msgPopup);
     setTimeout(() => {
-      replaceWithCircle(msg);
+      replaceWithCircle(msgPopup);
     }, 7000);
   }
 
@@ -452,7 +471,6 @@ toggleTracking__BTN.addEventListener("click", () => {
     toggleTracking__BTN.style.backgroundColor = "#141414";
     mvmntTxt.innerText = "Off";
   }
-  console.log(toggleTracking__BTN.style.backgroundColor);
 });
 
 // Program Loop

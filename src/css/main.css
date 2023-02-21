@@ -187,8 +187,14 @@ p.dynamicLoc {
   margin: 0;
 }
 
-.distance {
+.distance,
+.lat,
+.lon {
   color: rgb(241, 230, 7);
+}
+
+div.leaflet-popup-content-wrapper {
+  text-align: center;
 }
 
 p.refreshRate {
