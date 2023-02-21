@@ -10,7 +10,6 @@ body {
 
 img {
   max-width: 100%;
-  /* color: rgb(194, 44, 44); */
 }
 
 *,
@@ -124,10 +123,6 @@ h1 {
   margin-right: 0.5em;
 }
 
-/* .location {
-  padding: 1em 2em;
-} */
-
 .infoContainer {
   padding: 1em;
   /* border: solid 1px #fff; */
@@ -184,7 +179,6 @@ p.dynamicLoc {
 .btn__wrap {
   display: flex;
   justify-content: center;
-  /* flex-direction: column; */
   gap: 1em;
   margin-top: 1rem;
 }

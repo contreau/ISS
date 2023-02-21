@@ -2,16 +2,7 @@
 
 // ISS location tracker
 
-/*
- * APIs used:
- * Where the ISS at?
- * OpenWeather
- * OpenCage
- */
-
 // Global vars
-const openweatherKey = "f2ac3bcb078fdfa4423ad86f0e434739";
-const opencageKey = "c3ea0f9d48bb420fad5b29b32ef6529f";
 let trackISS = false; // to be toggled to lock on and follow ISS movement
 let lastKnownLand = "Verifying..."; // Helps handle when water body returns undefined (in a transitionary coordinate between sea & land that the api doesn't know)
 
@@ -281,7 +272,7 @@ L.tileLayer(
 
 // Initializes Map View
 const initializeMap = async (map) => {
-  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+  const res = await fetch("api/isscoords");
   const data = await res.json();
   map.setView([data.latitude, data.longitude], 6);
   initialLat = data.latitude;
@@ -290,7 +281,7 @@ const initializeMap = async (map) => {
 
 // Recenters Map View
 const recenterMap = async (map) => {
-  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+  const res = await fetch("api/isscoords");
   const data = await res.json();
   map.setView([data.latitude, data.longitude], map.getZoom());
 };
@@ -329,11 +320,11 @@ const distance = function (lat1, lat2, lon1, lon2) {
 // || FUNCTION || Makes api calls and updates ISS position on map
 const ISSlocation = async () => {
   // Request Handling
-  const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544"); // returns a Response object
-  const data = await res.json(); // turns Response object's 'body' into a JSON object
+  const res = await fetch("api/isscoords");
+  const data = await res.json();
   const coordinates = [data.latitude, data.longitude];
   const locationRes = await fetch(
-    `https://api.openweathermap.org/geo/1.0/reverse?lat=${data.latitude}&lon=${data.longitude}&limit=5&appid=${openweatherKey}`
+    `api/openweather?lat=${data.latitude}&lon=${data.longitude}`
   );
   const geodata = await locationRes.json();
 
@@ -401,7 +392,7 @@ const ISSlocation = async () => {
   // handler for when above water
   if (geodata.length === 0) {
     const waterRes = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${data.latitude}+${data.longitude}&key=${opencageKey}`
+      `api/opencage?lat=${data.latitude}&lon=${data.longitude}`
     );
     const waterData = await waterRes.json();
     try {
