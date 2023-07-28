@@ -25,7 +25,7 @@ a {
 
 a:hover,
 a:focus {
-  color: #2278fe;
+  color: #f6ed44;
 }
 
 article {
@@ -42,7 +42,14 @@ body {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   color: #fff;
-  background-image: url("../../img/space-bg.jpg");
+  background-image: linear-gradient(
+    to right top,
+    #000000,
+    #111111,
+    #1c1c1c,
+    #272727,
+    #323232
+  );
 }
 
 /* || HEADER  */
@@ -65,6 +72,8 @@ body {
 .icons {
   display: flex;
   align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.65s 1.3s ease-in forwards;
 }
 
 h1 {
@@ -72,6 +81,8 @@ h1 {
   font-weight: 600;
   font-size: clamp(1.7rem, 8vw, 2.8rem);
   margin: 0;
+  opacity: 0;
+  animation: slide-fadeIn 0.5s 1s ease-in forwards;
 }
 
 .fa-brands {
@@ -98,6 +109,8 @@ h1 {
   width: 60%;
   border: solid 1px #ffffff30;
   border-radius: 15px;
+  opacity: 0;
+  animation: blur-fadeIn 0.8s 0.6s ease-in forwards;
 }
 
 #map {
@@ -116,6 +129,8 @@ h1 {
   border-radius: 15px;
   text-align: center;
   justify-content: space-evenly;
+  opacity: 0;
+  animation: blur-fadeIn 0.8s 0.3s ease-in forwards;
 }
 
 .fa-location-dot {
@@ -190,7 +205,7 @@ p.dynamicLoc {
 .distance,
 .lat,
 .lon {
-  color: rgb(241, 230, 7);
+  color: #f1e607;
 }
 
 .hidden-br {
@@ -265,12 +280,46 @@ p.refreshRate {
   }
 }
 
+@keyframes slide-fadeIn {
+  0% {
+    transform: translateX(-4rem);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0rem);
+  }
+}
+
+@keyframes blur-fadeIn {
+  0% {
+    filter: blur(5px);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
+
 /* || FOOTER */
 
 footer.container {
   margin: 0 auto;
   border-top: solid 1px #fff;
   width: 95%;
+  opacity: 0;
+  animation: fadeIn 0.65s 1.4s ease-in forwards;
 }
 
 .footerLinks {
